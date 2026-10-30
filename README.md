@@ -1,5 +1,7 @@
 # Customer-Eye Website Audit: a Claude Skill for website QA and UX audits
 
+[![Latest release](https://img.shields.io/github/v/release/efeislekel/customer-eye-website-audit?label=release)](https://github.com/efeislekel/customer-eye-website-audit/releases/latest) [![Downloads](https://img.shields.io/github/downloads/efeislekel/customer-eye-website-audit/total?label=downloads)](https://github.com/efeislekel/customer-eye-website-audit/releases) [![GitHub stars](https://img.shields.io/github/stars/efeislekel/customer-eye-website-audit?style=flat&label=stars)](https://github.com/efeislekel/customer-eye-website-audit/stargazers) [![License: MIT](https://img.shields.io/github/license/efeislekel/customer-eye-website-audit)](LICENSE)
+
 **Customer-Eye Website Audit** is a free, open-source [Claude Skill](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview) that audits any website the way a real customer experiences it. It finds the problems that cost you leads and sales: broken links, empty image slots, empty category pages, misleading "Sold Out" badges, popups covering the screen on mobile, leftover theme demo text and broken booking or contact forms.
 
 Works with **Shopify**, **WordPress**, **WooCommerce** and custom websites. Built from real audits of e-commerce and showroom sites.
@@ -27,9 +29,8 @@ The skill's golden rule: **every finding is confirmed on the live page** (screen
 ## Installation
 
 ### Claude.ai / Claude desktop app
-1. Download this repository as a ZIP (**Code > Download ZIP**).
-2. Unzip it, rename the folder to `customer-eye-website-audit` (it should contain `SKILL.md`) and zip that folder again.
-3. In Claude, go to **Settings > Capabilities > Skills** and upload the ZIP.
+1. Download **[customer-eye-website-audit.zip](https://github.com/efeislekel/customer-eye-website-audit/releases/latest/download/customer-eye-website-audit.zip)** (always the latest version).
+2. In Claude, go to **Settings > Capabilities > Skills** and upload the ZIP. Keep it zipped.
 
 ### Claude Code
 ```bash

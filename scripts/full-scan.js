@@ -1,5 +1,6 @@
 // Run in the browser console on any page of the site you are auditing.
-// Works on any platform (Shopify, WordPress, custom). On Shopify it also scans every collection and product.
+// Works on any platform (WordPress, Shopify, Wix, Squarespace, Webflow, custom code).
+// Extra on Shopify: it also scans every collection and product, including ones not in the menu.
 // Runs in the background; when finished the result is stored in window.__R (read it with poll.js).
 (async () => {
   const O = location.origin;
@@ -36,7 +37,7 @@
     } catch (e) { return { s: 'ERR', ph: [], links: [], deadBtns: [] }; }
   }
 
-  // Starting points: home page + sitemap (if any) + every collection (Shopify)
+  // Starting points: home page + sitemap (if any) + every collection (Shopify only)
   let start = [O + '/'];
   try {
     const sm = await (await fetch('/sitemap.xml')).text();
@@ -67,7 +68,7 @@
 
   // Do image files load? (same site and known CDNs only; others cannot be checked because of CORS)
   const bad = [];
-  const checkable = [...imgs.keys()].filter(u => u.startsWith(O) || /cdn\.shopify\.com|wp-content/.test(u));
+  const checkable = [...imgs.keys()].filter(u => u.startsWith(O) || /cdn\.shopify\.com|wp-content|wixstatic\.com|squarespace-cdn\.com|website-files\.com/.test(u));
   await pool(checkable, 16, async u => { try { const r = await fetch(u, { method: 'HEAD' }); if (!r.ok) bad.push(imgs.get(u).replace(O, '') + ' :: ' + u.slice(0, 100) + ' ' + r.status); } catch (e) { } });
 
   const iss = [];
@@ -77,7 +78,7 @@
       iss.push({ u: u.replace(O, ''), s: v.s, notFound: notFound || undefined, ph: v.ph.length ? v.ph : undefined, emptyImg: v.emptyImg || undefined, emptyList: v.emptyList || undefined, demo: v.demo || undefined, deadBtns: (v.deadBtns || []).length ? v.deadBtns : undefined, from: (parent[u] || '').replace(O, '') });
   }
   Object.assign(R, {
-    done: true, platform: isShopify ? 'shopify' : (document.querySelector('link[href*="wp-content"],script[src*="wp-content"]') ? 'wordpress' : 'other'),
+    done: true, platform: isShopify ? 'shopify' : document.querySelector('link[href*="wp-content"],script[src*="wp-content"]') ? 'wordpress' : document.querySelector('[src*="wixstatic.com"],meta[name="generator"][content*="Wix"]') ? 'wix' : document.querySelector('[src*="squarespace"]') ? 'squarespace' : document.querySelector('html[data-wf-site]') ? 'webflow' : 'other',
     theme: window.Shopify?.theme?.name, pages: pages.size, cols: cols.length, imgsChecked: checkable.length, badImgs: bad, issues: iss,
     products: prods.length,
     zeroPrice: prods.filter(p => p.variants.every(v => parseFloat(v.price) === 0)).map(p => p.handle),
